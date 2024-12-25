@@ -19,7 +19,8 @@ export class LoginService {
         langKey: 'en',
         lastName: '',
         login: credentials.username,
-        imageUrl: ''
+        imageUrl: '',
+        authorities: ['ROLE_USER']
       }))
     );
   }
@@ -33,7 +34,8 @@ export class LoginService {
         langKey: 'en',
         lastName: '',
         login: 'google-user',
-        imageUrl: ''
+        imageUrl: '',
+        authorities: ['ROLE_USER']
       }))
     );
   }
@@ -47,7 +49,8 @@ export class LoginService {
         langKey: 'en',
         lastName: '',
         login: 'facebook-user',
-        imageUrl: ''
+        imageUrl: '',
+        authorities: ['ROLE_USER']
       }))
     );
   }
