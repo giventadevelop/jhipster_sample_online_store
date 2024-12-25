@@ -6,12 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { Account } from 'app/core/auth/account.model';
 import { Login } from './login.model';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
   constructor(
     private http: HttpClient,
-    private applicationConfigService: ApplicationConfigService
+    private applicationConfigService: ApplicationConfigService,
+    private authServerProvider: AuthServerProvider
   ) {}
 
   login(credentials: Login): Observable<Account | null> {
