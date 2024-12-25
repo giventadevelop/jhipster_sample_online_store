@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private router: Router,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +44,9 @@ export class LoginComponent implements OnInit {
           rememberMe: this.loginForm.get('rememberMe')!.value,
         })
         .subscribe({
-          next: () => {
+          next: (account) => {
             this.authenticationError = false;
+            this.accountService.authenticate(account);
             if (!this.router.getCurrentNavigation()) {
               // There's no redirect URL, so go to home page
               this.router.navigate(['']);
@@ -60,8 +62,9 @@ export class LoginComponent implements OnInit {
   loginWithGoogle(): void {
     this.log.debug('Google login attempt');
     this.loginService.loginWithGoogle().subscribe({
-      next: () => {
+      next: (account) => {
         this.authenticationError = false;
+        this.accountService.authenticate(account);
         this.router.navigate(['']);
       },
       error: () => {
@@ -73,8 +76,9 @@ export class LoginComponent implements OnInit {
   loginWithFacebook(): void {
     this.log.debug('Facebook login attempt');
     this.loginService.loginWithFacebook().subscribe({
-      next: () => {
+      next: (account) => {
         this.authenticationError = false;
+        this.accountService.authenticate(account);
         this.router.navigate(['']);
       },
       error: () => {
