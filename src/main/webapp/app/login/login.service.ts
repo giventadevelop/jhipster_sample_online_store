@@ -6,14 +6,12 @@ import { HttpClient } from '@angular/common/http';
 import { Account } from 'app/core/auth/account.model';
 import { Login } from './login.model';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
   constructor(
     private http: HttpClient,
-    private applicationConfigService: ApplicationConfigService,
-    private authServerProvider: AuthServerProvider
+    private applicationConfigService: ApplicationConfigService
   ) {}
 
   login(credentials: Login): Observable<Account | null> {
@@ -28,9 +26,10 @@ export class LoginService {
   }
 
   loginWithGoogle(): Observable<Account | null> {
-    return this.authServerProvider.loginWithGoogle().pipe(
-      map(() => {
-        const account: Account = {
+    return this.http
+      .post<any>(this.applicationConfigService.getEndpointFor('api/authenticate/google'), {})
+      .pipe(
+        map(() => ({
           activated: true,
           email: '',
           firstName: '',
@@ -39,16 +38,15 @@ export class LoginService {
           login: 'google-user',
           imageUrl: '',
           authorities: ['ROLE_USER']
-        };
-        return account;
-      })
-    );
+        }))
+      );
   }
 
   loginWithFacebook(): Observable<Account | null> {
-    return this.authServerProvider.loginWithFacebook().pipe(
-      map(() => {
-        const account: Account = {
+    return this.http
+      .post<any>(this.applicationConfigService.getEndpointFor('api/authenticate/facebook'), {})
+      .pipe(
+        map(() => ({
           activated: true,
           email: '',
           firstName: '',
@@ -57,14 +55,12 @@ export class LoginService {
           login: 'facebook-user',
           imageUrl: '',
           authorities: ['ROLE_USER']
-        };
-        return account;
-      })
-    );
+        }))
+      );
   }
 
   logout(): void {
-    this.authServerProvider.logout().subscribe();
+    this.http.post(this.applicationConfigService.getEndpointFor('api/logout'), {}).subscribe();
   }
 
   private createAccount(username: string): Account {
