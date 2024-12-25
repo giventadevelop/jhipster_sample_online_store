@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { Log, LogService } from '../shared/log/log.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ApplicationConfigService } from '../core/config/application-config.service';
 import { LoginService } from './login.service';
 import { AuthServerProvider } from '../core/auth/auth-jwt.service';
 import { AccountService } from '../core/auth/account.service';
@@ -23,9 +24,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private accountService: AccountService,
-    private http: HttpClient,
-    private applicationConfigService: ApplicationConfigService
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
