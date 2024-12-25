@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -16,25 +16,22 @@ export class LoginService {
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(
-      tap(() => {
-        this.accountService.identity(true).subscribe();
-      })
+      tap(() => this.accountService.identity(true).subscribe()),
+      switchMap(() => this.accountService.identity())
     );
   }
 
   loginWithGoogle(): Observable<Account | null> {
     return this.authServerProvider.loginWithGoogle().pipe(
-      tap(() => {
-        this.accountService.identity(true).subscribe();
-      })
+      tap(() => this.accountService.identity(true).subscribe()),
+      switchMap(() => this.accountService.identity())
     );
   }
 
   loginWithFacebook(): Observable<Account | null> {
     return this.authServerProvider.loginWithFacebook().pipe(
-      tap(() => {
-        this.accountService.identity(true).subscribe();
-      })
+      tap(() => this.accountService.identity(true).subscribe()),
+      switchMap(() => this.accountService.identity())
     );
   }
 
