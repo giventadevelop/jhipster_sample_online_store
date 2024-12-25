@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 import { Account } from 'app/core/auth/account.model';
-import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { Login } from './login.model';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  constructor(private authServerProvider: AuthServerProvider) {}
+  constructor(
+    private http: HttpClient,
+    private applicationConfigService: ApplicationConfigService
+  ) {}
 
   login(credentials: Login): Observable<Account | null> {
-    return this.authServerProvider.login(credentials).pipe(
-      map(() => this.createAccount(credentials.username))
-    );
+    return this.http
+      .post<any>(
+        this.applicationConfigService.getEndpointFor('api/authenticate'),
+        credentials
+      )
+      .pipe(
+        map(() => this.createAccount(credentials.username))
+      );
   }
 
   loginWithGoogle(): Observable<Account | null> {
