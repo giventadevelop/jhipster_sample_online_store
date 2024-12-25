@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Account } from 'app/core/auth/account.model';
@@ -12,20 +12,21 @@ export class LoginService {
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(
-      map(() => {
-        const account: Account = {
-          activated: true,
-          email: credentials.username,
-          firstName: '',
-          langKey: 'en',
-          lastName: '',
-          login: credentials.username,
-          imageUrl: '',
-          authorities: ['ROLE_USER']
-        };
-        return account;
-      })
+      map(() => this.createAccount(credentials.username))
     );
+  }
+
+  private createAccount(username: string): Account {
+    return {
+      activated: true,
+      email: username,
+      firstName: '',
+      langKey: 'en',
+      lastName: '',
+      login: username,
+      imageUrl: '',
+      authorities: ['ROLE_USER']
+    };
   }
 
   loginWithGoogle(): Observable<Account | null> {

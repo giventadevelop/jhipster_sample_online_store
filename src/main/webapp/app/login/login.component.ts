@@ -59,31 +59,31 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  private handleLoginSuccess(account: Account | null): void {
+    this.authenticationError = false;
+    this.accountService.authenticate(account);
+    if (!this.router.getCurrentNavigation()) {
+      this.router.navigate(['']);
+    }
+  }
+
+  private handleLoginError(): void {
+    this.authenticationError = true;
+  }
+
   loginWithGoogle(): void {
     this.log.debug('Google login attempt');
     this.loginService.loginWithGoogle().subscribe({
-      next: (account) => {
-        this.authenticationError = false;
-        this.accountService.authenticate(account);
-        this.router.navigate(['']);
-      },
-      error: () => {
-        this.authenticationError = true;
-      },
+      next: account => this.handleLoginSuccess(account),
+      error: () => this.handleLoginError(),
     });
   }
 
   loginWithFacebook(): void {
     this.log.debug('Facebook login attempt');
     this.loginService.loginWithFacebook().subscribe({
-      next: (account) => {
-        this.authenticationError = false;
-        this.accountService.authenticate(account);
-        this.router.navigate(['']);
-      },
-      error: () => {
-        this.authenticationError = true;
-      },
+      next: account => this.handleLoginSuccess(account),
+      error: () => this.handleLoginError(),
     });
   }
 }
