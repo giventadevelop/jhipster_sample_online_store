@@ -16,19 +16,6 @@ export class LoginService {
     );
   }
 
-  private createAccount(username: string): Account {
-    return {
-      activated: true,
-      email: username,
-      firstName: '',
-      langKey: 'en',
-      lastName: '',
-      login: username,
-      imageUrl: '',
-      authorities: ['ROLE_USER']
-    };
-  }
-
   loginWithGoogle(): Observable<Account | null> {
     return this.authServerProvider.loginWithGoogle().pipe(
       map(() => {
@@ -67,5 +54,18 @@ export class LoginService {
 
   logout(): void {
     this.authServerProvider.logout().subscribe();
+  }
+
+  private createAccount(username: string): Account {
+    return {
+      activated: true,
+      email: username,
+      firstName: '',
+      langKey: 'en',
+      lastName: '',
+      login: username,
+      imageUrl: '',
+      authorities: ['ROLE_USER']
+    };
   }
 }
