@@ -16,22 +16,19 @@ export class LoginService {
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(
-      tap(() => this.accountService.identity(true).subscribe()),
-      switchMap(() => this.accountService.identity())
+      switchMap(() => this.accountService.identity(true))
     );
   }
 
   loginWithGoogle(): Observable<Account | null> {
     return this.authServerProvider.loginWithGoogle().pipe(
-      tap(() => this.accountService.identity(true).subscribe()),
-      switchMap(() => this.accountService.identity())
+      switchMap(() => this.accountService.identity(true))
     );
   }
 
   loginWithFacebook(): Observable<Account | null> {
     return this.authServerProvider.loginWithFacebook().pipe(
-      tap(() => this.accountService.identity(true).subscribe()),
-      switchMap(() => this.accountService.identity())
+      switchMap(() => this.accountService.identity(true))
     );
   }
 
