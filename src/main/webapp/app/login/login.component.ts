@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 import { AuthServerProvider } from '../core/auth/auth-jwt.service';
 import { AccountService } from '../core/auth/account.service';
+import { Account } from '../core/auth/account.model';
 
 @Component({
   selector: 'jhi-login',
