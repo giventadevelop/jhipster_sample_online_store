@@ -12,7 +12,10 @@ export class LoginService {
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(
-      map(() => {
+      map(response => {
+        if (!response) {
+          return null;
+        }
         const account: Account = {
           activated: true,
           email: credentials.username,
@@ -30,7 +33,10 @@ export class LoginService {
 
   loginWithGoogle(): Observable<Account | null> {
     return this.authServerProvider.loginWithGoogle().pipe(
-      map(() => {
+      map(response => {
+        if (!response) {
+          return null;
+        }
         const account: Account = {
           activated: true,
           email: '',
@@ -48,7 +54,10 @@ export class LoginService {
 
   loginWithFacebook(): Observable<Account | null> {
     return this.authServerProvider.loginWithFacebook().pipe(
-      map(() => {
+      map(response => {
+        if (!response) {
+          return null;
+        }
         const account: Account = {
           activated: true,
           email: '',
