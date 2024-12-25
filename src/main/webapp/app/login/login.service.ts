@@ -12,46 +12,55 @@ export class LoginService {
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(
-      map(() => ({ 
-        activated: true,
-        email: credentials.username,
-        firstName: '',
-        langKey: 'en',
-        lastName: '',
-        login: credentials.username,
-        imageUrl: '',
-        authorities: ['ROLE_USER']
-      }))
+      map(() => {
+        const account: Account = {
+          activated: true,
+          email: credentials.username,
+          firstName: '',
+          langKey: 'en',
+          lastName: '',
+          login: credentials.username,
+          imageUrl: '',
+          authorities: ['ROLE_USER']
+        };
+        return account;
+      })
     );
   }
 
   loginWithGoogle(): Observable<Account | null> {
     return this.authServerProvider.loginWithGoogle().pipe(
-      map(() => ({ 
-        activated: true,
-        email: '',
-        firstName: '',
-        langKey: 'en',
-        lastName: '',
-        login: 'google-user',
-        imageUrl: '',
-        authorities: ['ROLE_USER']
-      }))
+      map(() => {
+        const account: Account = {
+          activated: true,
+          email: '',
+          firstName: '',
+          langKey: 'en',
+          lastName: '',
+          login: 'google-user',
+          imageUrl: '',
+          authorities: ['ROLE_USER']
+        };
+        return account;
+      })
     );
   }
 
   loginWithFacebook(): Observable<Account | null> {
     return this.authServerProvider.loginWithFacebook().pipe(
-      map(() => ({ 
-        activated: true,
-        email: '',
-        firstName: '',
-        langKey: 'en',
-        lastName: '',
-        login: 'facebook-user',
-        imageUrl: '',
-        authorities: ['ROLE_USER']
-      }))
+      map(() => {
+        const account: Account = {
+          activated: true,
+          email: '',
+          firstName: '',
+          langKey: 'en',
+          lastName: '',
+          login: 'facebook-user',
+          imageUrl: '',
+          authorities: ['ROLE_USER']
+        };
+        return account;
+      })
     );
   }
 
