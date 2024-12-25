@@ -30,6 +30,7 @@ local.properties
 .settings/
 .loadpath
 .factorypath
+/.chrome-debug-profile/*
 
 # External tool builders
 .externalToolBuilders/**
@@ -149,3 +150,20 @@ Desktop.ini
 ######################
 /coverage/
 /.nyc_output/
+
+
+
+.nx/cache
+.nx/workspace-data
+.aider*
+.env
+/.aider.tags.cache.v3/
+/.angular/
+/.chrome-debug-profile/
+/.devcontainer/
+/.husky/
+/.idea/
+/.jhipster/
+/.mvn/
+/.nx/
+/.vscode/

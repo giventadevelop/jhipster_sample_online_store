@@ -92,6 +92,19 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+    @Column(name = "social_type")
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType = SocialType.LOCAL;
+
+    @Column(name = "social_id")
+    private String socialId;
+
+    public enum SocialType {
+        GOOGLE,
+        FACEBOOK,
+        LOCAL,
+    }
+
     public Long getId() {
         return id;
     }
@@ -195,6 +208,22 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public SocialType getSocialType() {
+        return socialType;
+    }
+
+    public void setSocialType(SocialType socialType) {
+        this.socialType = socialType;
+    }
+
+    public String getSocialId() {
+        return socialId;
+    }
+
+    public void setSocialId(String socialId) {
+        this.socialId = socialId;
     }
 
     @Override

@@ -8,6 +8,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import './config/dayjs';
@@ -24,6 +25,7 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
 @NgModule({
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
