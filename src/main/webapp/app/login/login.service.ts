@@ -18,6 +18,14 @@ export class LoginService {
     return this.authServerProvider.login(credentials).pipe(mergeMap(() => this.accountService.identity(true)));
   }
 
+  loginWithGoogle(): Observable<Account | null> {
+    return this.authServerProvider.loginWithGoogle().pipe(mergeMap(() => this.accountService.identity(true)));
+  }
+
+  loginWithFacebook(): Observable<Account | null> {
+    return this.authServerProvider.loginWithFacebook().pipe(mergeMap(() => this.accountService.identity(true)));
+  }
+
   logout(): void {
     this.authServerProvider.logout().subscribe({ complete: () => this.accountService.authenticate(null) });
   }

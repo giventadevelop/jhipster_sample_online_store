@@ -1,58 +1,86 @@
-import { Component, ViewChild, OnInit, AfterViewInit, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-
-import SharedModule from 'app/shared/shared.module';
-import { LoginService } from 'app/login/login.service';
-import { AccountService } from 'app/core/auth/account.service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Log, LogService } from '../shared/log/log.service';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { LoginService } from './login.service';
+import { AuthServerProvider } from '../core/auth/auth-jwt.service';
+import { AccountService } from '../core/auth/account.service';
 
 @Component({
   selector: 'jhi-login',
-  standalone: true,
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  providers: [LoginService, AuthServerProvider, AccountService],
 })
-export default class LoginComponent implements OnInit, AfterViewInit {
-  @ViewChild('username', { static: false })
-  username!: ElementRef;
-
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
   authenticationError = false;
-
-  loginForm = new FormGroup({
-    username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    rememberMe: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
-  });
+  private log = LogService.create(this.constructor.name);
 
   constructor(
-    private accountService: AccountService,
+    private formBuilder: FormBuilder,
     private loginService: LoginService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    // if already authenticated then navigate to home page
-    this.accountService.identity().subscribe(() => {
-      if (this.accountService.isAuthenticated()) {
-        this.router.navigate(['']);
-      }
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [false],
     });
   }
 
-  ngAfterViewInit(): void {
-    this.username.nativeElement.focus();
+  login(): void {
+    if (this.loginForm.valid) {
+      this.log.debug('Login attempt', this.loginForm.value);
+
+      this.loginService
+        .login({
+          username: this.loginForm.get('username')!.value,
+          password: this.loginForm.get('password')!.value,
+          rememberMe: this.loginForm.get('rememberMe')!.value,
+        })
+        .subscribe({
+          next: () => {
+            this.authenticationError = false;
+            if (!this.router.getCurrentNavigation()) {
+              // There's no redirect URL, so go to home page
+              this.router.navigate(['']);
+            }
+          },
+          error: () => {
+            this.authenticationError = true;
+          },
+        });
+    }
   }
 
-  login(): void {
-    this.loginService.login(this.loginForm.getRawValue()).subscribe({
+  loginWithGoogle(): void {
+    this.log.debug('Google login attempt');
+    this.loginService.loginWithGoogle().subscribe({
       next: () => {
         this.authenticationError = false;
-        if (!this.router.getCurrentNavigation()) {
-          // There were no routing during login (eg from navigationToStoredUrl)
-          this.router.navigate(['']);
-        }
+        this.router.navigate(['']);
       },
-      error: () => (this.authenticationError = true),
+      error: () => {
+        this.authenticationError = true;
+      },
+    });
+  }
+
+  loginWithFacebook(): void {
+    this.log.debug('Facebook login attempt');
+    this.loginService.loginWithFacebook().subscribe({
+      next: () => {
+        this.authenticationError = false;
+        this.router.navigate(['']);
+      },
+      error: () => {
+        this.authenticationError = true;
+      },
     });
   }
 }
