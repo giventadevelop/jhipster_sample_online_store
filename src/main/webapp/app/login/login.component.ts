@@ -12,7 +12,6 @@ import { AccountService } from '../core/auth/account.service';
   templateUrl: './login.component.html',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  providers: [LoginService, AuthServerProvider, AccountService],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

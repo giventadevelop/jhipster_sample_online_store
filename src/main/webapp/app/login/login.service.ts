@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -11,22 +11,36 @@ import { Login } from './login.model';
 export class LoginService {
   constructor(
     private accountService: AccountService,
-    private authServerProvider: AuthServerProvider,
+    private authServerProvider: AuthServerProvider
   ) {}
 
   login(credentials: Login): Observable<Account | null> {
-    return this.authServerProvider.login(credentials).pipe(mergeMap(() => this.accountService.identity(true)));
+    return this.authServerProvider.login(credentials).pipe(
+      tap(() => {
+        this.accountService.identity(true).subscribe();
+      })
+    );
   }
 
   loginWithGoogle(): Observable<Account | null> {
-    return this.authServerProvider.loginWithGoogle().pipe(mergeMap(() => this.accountService.identity(true)));
+    return this.authServerProvider.loginWithGoogle().pipe(
+      tap(() => {
+        this.accountService.identity(true).subscribe();
+      })
+    );
   }
 
   loginWithFacebook(): Observable<Account | null> {
-    return this.authServerProvider.loginWithFacebook().pipe(mergeMap(() => this.accountService.identity(true)));
+    return this.authServerProvider.loginWithFacebook().pipe(
+      tap(() => {
+        this.accountService.identity(true).subscribe();
+      })
+    );
   }
 
   logout(): void {
-    this.authServerProvider.logout().subscribe({ complete: () => this.accountService.authenticate(null) });
+    this.authServerProvider.logout().subscribe({
+      complete: () => this.accountService.authenticate(null)
+    });
   }
 }
