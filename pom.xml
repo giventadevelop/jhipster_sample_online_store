@@ -10,7 +10,7 @@
     <name>Jhipster Sample Online Store</name>
     <description>Description for Jhipster Sample Online Store</description>
 
-    <distributionManagement>
+   <!-- <distributionManagement>
         <snapshotRepository>
             <id/>
             <url/>
@@ -19,7 +19,7 @@
             <id/>
             <url/>
         </repository>
-    </distributionManagement>
+    </distributionManagement>-->
 
     <properties>
         <!--
