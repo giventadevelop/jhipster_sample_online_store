@@ -10,6 +10,17 @@
     <name>Jhipster Sample Online Store</name>
     <description>Description for Jhipster Sample Online Store</description>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id/>
+            <url/>
+        </snapshotRepository>
+        <repository>
+            <id/>
+            <url/>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <!--
             Build properties

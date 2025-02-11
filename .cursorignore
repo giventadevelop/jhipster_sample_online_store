@@ -1,0 +1,15 @@
+src/main/java/
+src/test/java/
+target/
+.mvn/
+gradle/
+.gradle/
+.settings/
+bin/
+build/
+*.java
+*.xml
+.classpath
+.project
+gradlew*
+mvnw*
