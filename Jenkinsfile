@@ -10,7 +10,6 @@ node {
     }
 
     stage('clean') {
-        bat "chmod +x mvnw"
         bat "mvnw -ntp clean -P-webapp"
     }
     stage('nohttp') {
