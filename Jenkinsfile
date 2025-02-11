@@ -6,27 +6,27 @@ node {
     }
 
     stage('check java') {
-        sh "java -version"
+        bat "java -version"
     }
 
     stage('clean') {
-        sh "chmod +x mvnw"
-        sh "./mvnw -ntp clean -P-webapp"
+        bat "chmod +x mvnw"
+        bat "./mvnw -ntp clean -P-webapp"
     }
     stage('nohttp') {
-        sh "./mvnw -ntp checkstyle:check"
+        bat "./mvnw -ntp checkstyle:check"
     }
 
     stage('install tools') {
-        sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
+        bat "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
     }
 
     stage('npm install') {
-        sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
+        bat "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
     }
     stage('backend tests') {
         try {
-            sh "./mvnw -ntp verify -P-webapp"
+            bat "./mvnw -ntp verify -P-webapp"
         } catch(err) {
             throw err
         } finally {
@@ -36,7 +36,7 @@ node {
 
     stage('frontend tests') {
         try {
-            sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'"
+            bat "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'"
         } catch(err) {
             throw err
         } finally {
@@ -45,7 +45,7 @@ node {
     }
 
     stage('packaging') {
-        sh "./mvnw -ntp verify -P-webapp deploy -Pdev -DskipTests"
+        bat "./mvnw -ntp verify -P-webapp deploy -Pdev -DskipTests"
         archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
 }
